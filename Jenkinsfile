@@ -1,7 +1,7 @@
 
 def doBuild(delivery) {
 
-if('develop' == delivery.branchTag()) {
+if('master' == delivery.branchTag()) {
 
       def clusterSettings = readYaml file: '.k8s/env/develop/dev.yaml'
       def context = clusterSettings.context
