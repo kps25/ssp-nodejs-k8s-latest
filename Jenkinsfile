@@ -23,7 +23,7 @@ node ('docker') {
 
     checkout([$class: 'GitSCM', branches: [[name: "*/master"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'delivery']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/salugu/ssp-groovy.git']]])
 
-     delivery = load 'delivery.groovy'
+     delivery = load 'delivery/delivery.groovy'
 
     sh 'ls .'
   }
