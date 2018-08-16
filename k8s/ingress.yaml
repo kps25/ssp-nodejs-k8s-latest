@@ -1,0 +1,14 @@
+# Ingress
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ing-ssp-nodejs
+spec:
+  rules:
+    - host: nodejs.dev.sspcloudpro.co.in
+      http:
+        paths:
+        - backend:
+            serviceName: svc-ssp-nodejs
+            servicePort: 80

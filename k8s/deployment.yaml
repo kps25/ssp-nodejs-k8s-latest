@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ssp-nodejs-deployment
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ssp-nodejs
+    spec:
+      containers:
+      - name: ssp-server
+        image: ssp25/ssp-nodejs:s2
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 7070
