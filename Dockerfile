@@ -10,4 +10,4 @@ COPY . /app
 
 CMD node index.js
 
-EXPOSE 9090
+EXPOSE 7070
