@@ -1,0 +1,73 @@
+def settings() {
+    [
+            'kubectlImage' : 'ssp25/ssp-kubectl:L1'
+    ]
+}
+
+
+
+def branchAndBuildTag() {
+    return "${env.BRANCH_NAME}${env.BUILD_NUMBER}"
+}
+
+def branchTag() {
+    return "${env.BRANCH_NAME}"
+}
+
+def deploymentUpdateSspWebNode(context, namespace, newVersion) {
+    sh "/usr/local/bin/kubectl set image deployment ssp-nodejs-deployment  ssp-nodejs-deployment=${newVersion} --context=${context} --namespace=${namespace}"
+
+}
+
+
+def doBuild() {
+def settings = settings()
+ def context
+ def namespace
+ context: 'dev.sspcloudpro.co.in'
+ namespace: 'dev'
+ image: 'ssp25/ssp-nodejs:s1'
+
+
+
+stage('build') {
+ sh " cd $WORKSPACE"
+ sh "/usr/bin/docker build -t ssp25/ssp-nodejs-proj:${branchAndBuildTag()} ."
+}
+stage('Push') {
+  sh " cd $WORKSPACE"
+  sh "/usr/bin/docker push ssp25/ssp-nodejs-proj:${branchAndBuildTag()}"
+}
+
+if('master' == branchTag()) {
+ stage('deploy') {
+    sh "sh jenkins/kube_config.sh"
+       deploymentUpdateSspWebNode("dev.sspcloudpro.co.in", "dev", "ssp25/ssp-nodejs-proj:${branchAndBuildTag()}")
+ }
+}
+}
+
+// Our Main Job starts from here....!!!
+
+node ('ssp-aws') {
+     deleteDir()
+
+    try {
+
+      stage("Code Checkout")
+        {
+        checkout scm
+        }
+
+        withCredentials([usernamePassword(credentialsId: 'ssp25', passwordVariable: 'dockerhubPass', usernameVariable: 'dockerhubUser')]) {
+            sh "/usr/bin/docker login -u ${dockerhubUser} -p ${dockerhubPass}"
+        }
+// Calling this method for build and push and deploy the docker image.
+  doBuild()
+
+    } catch (e) {
+        currentBuild.result = "FAILED"
+        echo "${e.getClass().getName()} - ${e.getMessage()}"
+        throw e
+    }
+}
