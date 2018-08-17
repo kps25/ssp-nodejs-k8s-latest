@@ -10,5 +10,5 @@ spec:
   ports:
   - port: 7070
     protocol: TCP
-    nodePort: 30062
+    nodePort: 30061
   type: LoadBalancer
