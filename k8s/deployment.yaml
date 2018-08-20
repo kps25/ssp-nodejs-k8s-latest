@@ -10,8 +10,8 @@ spec:
         app: ssp-nodejs
     spec:
       containers:
-      - name: ssp-server
-        image: ssp25/ssp-nodejs:s2
+      - name: ssp-nodejs
+        image: ssp25/k8s-node:v1
         imagePullPolicy: Always
         ports:
-        - containerPort: 7070
+        - containerPort: 9090

@@ -15,7 +15,7 @@ def branchTag() {
 }
 
 def deploymentUpdateSspWebNode(context, namespace, newVersion) {
-    sh "/usr/local/bin/kubectl set image deployment ssp-nodejs-deployment  ssp-server=${newVersion} --context=${context} --namespace=${namespace}"
+    sh "/usr/local/bin/kubectl set image deployment ssp-nodejs-deployment  ssp-nodejs=${newVersion} --context=${context} --namespace=${namespace}"
 
 }
 
@@ -24,8 +24,8 @@ def doBuild() {
 def settings = settings()
  def context
  def namespace
- context: 'dev.sspcloudpro.co.in'
- namespace: 'dev'
+ context: 'k8s.sspcloudpro.co.in'
+ namespace: 'default'
  image: 'ssp25/ssp-nodejs:s1'
 
 
@@ -49,7 +49,7 @@ if('master' == branchTag()) {
 
 // Our Main Job starts from here....!!!
 
-node ('ssp-aws') {
+node ('docker') {
      deleteDir()
 
     try {
