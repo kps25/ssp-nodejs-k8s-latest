@@ -42,7 +42,7 @@ stage('Push') {
 if('master' == branchTag()) {
  stage('deploy') {
     sh "sh jenkins/kube_config.sh"
-       deploymentUpdateSspWebNode("dev.sspcloudpro.co.in", "dev", "ssp25/ssp-nodejs-proj:${branchAndBuildTag()}")
+       deploymentUpdateSspWebNode("k8s.sspcloudpro.co.in", "default", "ssp25/ssp-nodejs-proj:${branchAndBuildTag()}")
  }
 }
 }
