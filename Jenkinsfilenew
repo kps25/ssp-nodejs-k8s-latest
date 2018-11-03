@@ -24,7 +24,7 @@ def doBuild() {
 def settings = settings()
  def context
  def namespace
- context: 'k8s.sspcloudpro.co.in'
+ context: 'ragava.sspcloudpro.co.in'
  namespace: 'default'
  image: 'ssp25/ssp-nodejs:s1'
 
@@ -42,7 +42,7 @@ stage('Push') {
 if('master' == branchTag()) {
  stage('deploy') {
     sh "sh jenkins/kube_config.sh"
-       deploymentUpdateSspWebNode("k8s.sspcloudpro.co.in", "default", "ssp25/ssp-nodejs-proj:${branchAndBuildTag()}")
+       deploymentUpdateSspWebNode("ragava.sspcloudpro.co.in", "default", "ssp25/ssp-nodejs-proj:${branchAndBuildTag()}")
  }
 }
 }
@@ -50,7 +50,7 @@ if('master' == branchTag()) {
 // Our Main Job starts from here....!!!
 
 node ('master') {
-     deleteDir()
+    // deleteDir()
 
     try {
 
