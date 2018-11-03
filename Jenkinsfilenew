@@ -49,7 +49,7 @@ if('master' == branchTag()) {
 
 // Our Main Job starts from here....!!!
 
-node ('docker') {
+node ('master') {
      deleteDir()
 
     try {
