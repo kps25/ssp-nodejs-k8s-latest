@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 API_SERVER="https://api.ragava.sspcloudpro.co.in"
-TOKEN="7IR4vOtqNKs7VnbATFUo2ZFgJ0IfW7gT"
+TOKEN="ChVclRrv6FHObeJ2IqY4mGR5PBWOUfn1"
 CLUSTER_NAME="ragava.sspcloudpro.co.in"
 
 /usr/local/bin/kubectl config set preferences.colors true
