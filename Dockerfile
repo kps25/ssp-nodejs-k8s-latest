@@ -8,6 +8,7 @@ RUN npm install express --save
 
 COPY . /app
 
-CMD node index.js
 
 EXPOSE 9090
+
+CMD ["node", "index.js"]

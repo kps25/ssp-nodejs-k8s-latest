@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ssp-nodejs
-        image: ssp25/k8s-node:v1
+        image: ssp25/ssp-nodejs-proj:master6
         imagePullPolicy: Always
         ports:
         - containerPort: 9090
