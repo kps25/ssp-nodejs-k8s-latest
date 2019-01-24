@@ -15,7 +15,7 @@ def branchTag() {
 }
 
 def deploymentUpdateSspWebNode(context, namespace, newVersion) {
-    sh "/usr/local/bin/kubectl set image deployment ssp-nodejs-deployment  ssp-nodejs=${newVersion} --context=${context} --namespace=${namespace}"
+    sh "/usr/bin/kubectl set image deployment ssp-nodejs-deployment  ssp-nodejs=${newVersion} --context=${context} --namespace=${namespace}"
 
 }
 
