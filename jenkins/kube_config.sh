@@ -2,7 +2,7 @@
 
 
 API_SERVER="https://api.k8s.sspcloudpro.co.in"
-TOKEN="Xu1SeogEfTfRavBojF9l9Txmfm5URhYj"
+TOKEN="KPKdboxZKzVURgrq1o763hfcHgVRBfyP"
 CLUSTER_NAME="k8s.sspcloudpro.co.in"
 
 /usr/bin/kubectl config set preferences.colors true
