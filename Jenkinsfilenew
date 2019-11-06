@@ -59,7 +59,7 @@ node ('master') {
         checkout scm
         }
 
-        withCredentials([usernamePassword(credentialsId: 'ssp25', passwordVariable: 'dockerhubPass', usernameVariable: 'dockerhubUser')]) {
+        withCredentials([usernamePassword(credentialsId: 'sspdockercreds', passwordVariable: 'dockerhubPass', usernameVariable: 'dockerhubUser')]) {
             sh "/usr/bin/docker login -u ${dockerhubUser} -p ${dockerhubPass}"
         }
 // Calling this method for build and push and deploy the docker image.
