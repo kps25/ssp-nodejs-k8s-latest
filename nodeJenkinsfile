@@ -1,4 +1,4 @@
-node('master') {
+node('ubuntu') {
     stage('Code Checkout') {
        // checkout scm
        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'adsspgithub', name: 'ssp-nodejs', url: 'https://github.com/kps25/ssp-nodejs-k8s-latest.git']]])
