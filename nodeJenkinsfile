@@ -13,7 +13,7 @@ node('ubuntu') {
     }
     stage('Deploy App'){
         sh "cd ${WORKSPACE}; sh kube_config.sh"
-        sh "kubectl set image deployment/ssp-nodejs-deployment ssp-nodejs=ssp25/ssp-nodejs-online:${env.BRANCH_NAME}${BUILD_NUMBER} --context=devops.sspcloudpro.co.in --namespace=default"
+        sh "kubectl set image deployment/ssp-nodejs-deployment ssp-nodejs=ssp25/ssp-nodejs-online:${env.BRANCH_NAME}${BUILD_NUMBER} --context=sspcloudpro.co.in --namespace=default"
     }
     
 }
