@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
 
+API_SERVER="https://api.sspcloudpro.co.in"
+TOKEN="asbm9rjkHREcZED7d75oWv0U29bjdhn3"
+CLUSTER_NAME="sspcloudpro.co.in"
 
-API_SERVER="https://api.k8s.sspcloudpro.co.in"
-TOKEN="KPKdboxZKzVURgrq1o763hfcHgVRBfyP"
-CLUSTER_NAME="k8s.sspcloudpro.co.in"
-
-/usr/bin/kubectl config set preferences.colors true
-/usr/bin/kubectl config set-cluster ${CLUSTER_NAME} --server=${API_SERVER} --insecure-skip-tls-verify=true
-/usr/bin/kubectl config set-credentials ${CLUSTER_NAME} --token=${TOKEN}
-/usr/bin/kubectl config set-context k8s.sspcloudpro.co.in  --cluster=${CLUSTER_NAME} --user=${CLUSTER_NAME} --namespace=default
-/usr/bin/kubectl config use-context k8s.sspcloudpro.co.in  --cluster=${CLUSTER_NAME} --user=${CLUSTER_NAME} --namespace=default
-
+kubectl config set preferences.colors true
+kubectl config set-cluster ${CLUSTER_NAME} --server=${API_SERVER} --insecure-skip-tls-verify=true
+kubectl config set-credentials ${CLUSTER_NAME} --token=${TOKEN}
+kubectl config set-context sspcloudpro.co.in  --cluster=${CLUSTER_NAME} --user=${CLUSTER_NAME} --namespace=default
 # To test that configuration works
-
-/usr/bin/kubectl get pods --context="k8s.sspcloudpro.co.in" --namespace default
-/usr/bin/kubectl config get-contexts --namespace default
+kubectl get pods --context="sspcloudpro.co.in" --namespace default
+kubectl config get-contexts --namespace default
