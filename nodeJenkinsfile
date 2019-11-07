@@ -1,4 +1,6 @@
 node('ubuntu') {
+
+try {
     stage('Code Checkout') {
        // checkout scm
        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'adsspgithub', name: 'ssp-nodejs', url: 'https://github.com/kps25/ssp-nodejs-k8s-latest.git']]])
@@ -15,5 +17,14 @@ node('ubuntu') {
         sh "cd ${WORKSPACE}; sh kube_config.sh"
         sh "kubectl set image deployment/ssp-nodejs-deployment ssp-nodejs=ssp25/ssp-nodejs-online:${env.BRANCH_NAME}${BUILD_NUMBER} --context=sspcloudpro.co.in --namespace=default"
     }
+slackSend channel: 'july-devops', color: 'good', message: '"Success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'sspslacktoken'
+}
+catch (e) {
+currentBuild.result = "FAILED"
+ echo "${e.getClass().getName()} - ${e.getMessage()}"
+ throw e
+slackSend channel: 'july-devops', color: 'bad', message: '"Failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'sspslacktoken'
+
+}
     
 }
