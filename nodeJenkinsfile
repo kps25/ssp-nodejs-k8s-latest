@@ -17,14 +17,15 @@ try {
         sh "cd ${WORKSPACE}; sh kube_config.sh"
         sh "kubectl set image deployment/ssp-nodejs-deployment ssp-nodejs=ssp25/ssp-nodejs-online:${env.BRANCH_NAME}${BUILD_NUMBER} --context=sspcloudpro.co.in --namespace=default"
     }
-slackSend channel: 'july-devops', color: 'good', message: '"Success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'sspslacktoken'
+
+slackSend channel: '#july-devops', color: 'good', message: "Success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|JenkinsUrl>)", teamDomain: 'sspcloudpro', tokenCredentialId: 'tokensspslack', username: 'sspcloudpro'
+
 }
 catch (e) {
 currentBuild.result = "FAILED"
  echo "${e.getClass().getName()} - ${e.getMessage()}"
  throw e
-slackSend channel: 'july-devops', color: 'bad', message: '"Failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"', tokenCredentialId: 'sspslacktoken'
-
+slackSend channel: '#july-devops', color: 'warning', message: "Failed ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|JenkinsUrl>)", teamDomain: 'sspcloudpro', tokenCredentialId: 'tokensspslack', username: 'sspcloudpro'
 }
     
 }
