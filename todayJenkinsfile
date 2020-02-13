@@ -1,0 +1,83 @@
+def settings() {
+    [
+            'kubectlImage' : 'ssp25/ssp-kubectl:koti'
+    ]
+}
+
+
+
+def branchAndBuildTag() {
+    return "${env.BRANCH_NAME}${env.BUILD_NUMBER}"
+}
+
+def branchTag() {
+    return "${env.BRANCH_NAME}"
+}
+
+/*def deploymentUpdateSspWebNode(context, namespace, newVersion) {
+    sh "/usr/bin/kubectl set image deployment ssp-nodejs-deployment  ssp-nodejs=${newVersion} --context=${context} --namespace=${namespace}"
+
+} */
+
+def deployNewVersion(newVersion, namespace)
+{
+    sh "kubectl set image deployment.v1.apps/ssp-deployment  ssp-app=${newVersion} --namespace=${namespace}"
+}
+
+//ssp25/ssp-nodejs-proj:newversion
+
+def doBuild() {
+def settings = settings()
+ def context
+ def namespace
+ context: 'k8s.sspcloudpro.co.in'
+ namespace: 'default'
+ image: 'ssp25/ssp-nodejs:s1'
+
+
+
+stage('build') {
+ sh " cd $WORKSPACE"
+ sh "/usr/bin/docker build -t ssp25/ssp-nodejs-proj:${branchAndBuildTag()} ."
+}
+stage('Push') {
+  sh " cd $WORKSPACE"
+  sh "/usr/bin/docker push ssp25/ssp-nodejs-proj:${branchAndBuildTag()}"
+}
+
+if('master' == branchTag()) {
+ stage('deploy') {
+    /*sh "sh jenkins/kube_config.sh"
+       deploymentUpdateSspWebNode("k8s.sspcloudpro.co.in", "default", "ssp25/ssp-nodejs-proj:${branchAndBuildTag()}") */
+    docker.image(settings.kubectlImage).inside("-u root") {
+    deployNewVersion("ssp25/ssp-nodejs-proj:${branchAndBuildTag()}", "develop")
+    }
+ }
+}
+}
+
+// Our Main Job starts from here....!!!
+
+node ('master') {
+    // deleteDir()
+
+    try {
+
+      stage("Code Checkout")
+        {
+        checkout scm
+        }
+
+        withCredentials([usernamePassword(credentialsId: 'sspdockercreds', passwordVariable: 'dockerhubPass', usernameVariable: 'dockerhubUser')]) {
+            sh "/usr/bin/docker login -u ${dockerhubUser} -p ${dockerhubPass}"
+        }
+// Calling this method for build and push and deploy the docker image.
+  doBuild()
+
+    } catch (e) {
+        currentBuild.result = "FAILED"
+        echo "${e.getClass().getName()} - ${e.getMessage()}"
+        throw e
+    }
+}
+
